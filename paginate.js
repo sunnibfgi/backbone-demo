@@ -3,10 +3,11 @@
     
   let Paginate = function(el, {
     pageNumbers,
-    pageCallback = function() {}
+    pageCallback = () => {}
   } = {}) {
     let pageStart = 1,
       pageIndex = 1,
+      // here is an even number greater than or equal to 6
       pageVisible = Math.min(pageNumbers, 6),
       hasGap = true,
       pageHalf = Math.ceil(pageVisible / 2 + (pageVisible % 2 ? 0 : 1)),
