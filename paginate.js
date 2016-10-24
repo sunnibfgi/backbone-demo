@@ -1,20 +1,26 @@
+//paginate.js
+//usage: Paginate(el, [options])
+
 (function(exports) {
   'use strict';
-    
   let Paginate = function(el, {
     pageNumbers,
-    pageCallback = () => {}
+    // `Must be an even number greater than or equal to 6 such as ${6,8,10...}`
+    pageVisible = 6,
+    pageCallback = function() {}
   } = {}) {
     let pageStart = 1,
       pageIndex = 1,
-      // here is an even number greater than or equal to 6
-      pageVisible = Math.min(pageNumbers, 6),
+      minValue = 6,
       hasGap = true,
       pageHalf = Math.ceil(pageVisible / 2 + (pageVisible % 2 ? 0 : 1)),
       pageLimit = pageVisible;
-
+      
     function paginate() {
+      if (pageNumbers < pageVisible) return false;
+      if(pageVisible % 2 || pageVisible < minValue) return false;
       if (pageNumbers - pageVisible < pageHalf) hasGap = false;
+      
       render(pageVisible);
       el.addEventListener('click', pageClickHandler);
     }
@@ -103,5 +109,4 @@
     return paginate();
   }
   exports.Paginate = Paginate;
-    
 })(window);
