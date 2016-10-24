@@ -58,7 +58,8 @@
 
     function getPageKeys(el, data) {
       var child = el.querySelectorAll('.page-item');
-      for (var i = 0, len = child.length; i < len; i++) child[i].key = data[i];
+      for (var i = 0, len = child.length; i < len; i++) 
+        child[i].key = data[i];
       return;
     }
 
