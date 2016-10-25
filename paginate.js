@@ -1,9 +1,7 @@
 //paginate.js
 //usage: Paginate(el, [options])
-
 (function(exports) {
-  'use strict';
-  
+
   let Paginate = function(el, {
     pageNumbers,
     pageVisible = 6,
@@ -17,17 +15,18 @@
       pageLimit = pageVisible;
 
     function paginate() {
-      if (pageNumbers < pageVisible) 
+      if (pageNumbers < pageVisible)
         return false;
-      if (pageVisible % 2 || pageVisible < minValue) 
+      if (pageVisible % 2 || pageVisible < minValue)
         return false;
-      if (pageNumbers - pageVisible < pageHalf) 
+      if (pageNumbers - pageVisible < pageHalf)
         hasGap = false;
+      render(pageVisible);
       el.addEventListener('click', function(e) {
         pageClickHandler(e);
-        pageCallback.call(this, el, pageIndex);
+        pageCallback(el, pageIndex);
       });
-      render(pageVisible);
+      window.addEventListener('hashchange', hashChangeHandler);
     }
 
     function render(limit) {
@@ -36,10 +35,10 @@
         data = [];
       if (pageNumbers >= pageVisible) {
         if (pageIndex === 1) html += '<span class="prev disabled">Previous</span>';
-        else html += '<a href="#" class="prev">Previous</a>';
+        else html += `<a href="#" class="prev">Previous</a>`;
       }
       if (hasGap && pageIndex > pageHalf) {
-        html += '<a href="#" class="first">1</a>';
+        html += `<a href="#" class="first">1</a>`;
         html += '<span class="gap">...</span>';
       }
       for (pages; pages <= limit; pages++) {
@@ -54,7 +53,7 @@
       }
       if (pageNumbers >= pageVisible) {
         if (pageIndex === pageNumbers) html += '<span class="disabled">Next</span>';
-        else html += '<a href="#" class="next">Next</a>';
+        else html += `<a href="#" class="next">Next</a>`
       }
       el.innerHTML = html;
       getPageKeys(el, data);
@@ -62,7 +61,8 @@
 
     function getPageKeys(el, data) {
       var child = el.querySelectorAll('.page-item');
-      for (var i = 0, len = child.length; i < len; i++) child[i].key = data[i];
+      for (var i = 0, len = child.length; i < len; i++) 
+        child[i].key = data[i];
       return;
     }
 
@@ -82,6 +82,13 @@
         }
       }
       render(pageLimit);
+      location.hash = `page-${pageIndex}`;
+    }
+
+    function hashChangeHandler(e) {
+      var str = e.newURL.match(/\d+$/g)[0];
+      pageIndex = +str;
+      viewPageNumbers();
     }
 
     function pageClickHandler(e) {
@@ -112,6 +119,6 @@
     }
     return paginate();
   }
-  
+
   exports.Paginate = Paginate;
 })(window);
