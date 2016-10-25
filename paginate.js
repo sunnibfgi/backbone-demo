@@ -3,9 +3,9 @@
 
 (function(exports) {
   'use strict';
+  
   let Paginate = function(el, {
     pageNumbers,
-    // `Must be an even number greater than or equal to 6 such as ${6,8,10...}`
     pageVisible = 6,
     pageCallback = function() {}
   } = {}) {
@@ -15,14 +15,19 @@
       hasGap = true,
       pageHalf = Math.ceil(pageVisible / 2 + (pageVisible % 2 ? 0 : 1)),
       pageLimit = pageVisible;
-      
+
     function paginate() {
-      if (pageNumbers < pageVisible) return false;
-      if(pageVisible % 2 || pageVisible < minValue) return false;
-      if (pageNumbers - pageVisible < pageHalf) hasGap = false;
-      
+      if (pageNumbers < pageVisible) 
+        return false;
+      if (pageVisible % 2 || pageVisible < minValue) 
+        return false;
+      if (pageNumbers - pageVisible < pageHalf) 
+        hasGap = false;
+      el.addEventListener('click', function(e) {
+        pageClickHandler(e);
+        pageCallback.call(this, el, pageIndex);
+      });
       render(pageVisible);
-      el.addEventListener('click', pageClickHandler);
     }
 
     function render(limit) {
@@ -53,13 +58,11 @@
       }
       el.innerHTML = html;
       getPageKeys(el, data);
-      pageCallback.call(this, el, pageIndex);
     }
 
     function getPageKeys(el, data) {
       var child = el.querySelectorAll('.page-item');
-      for (var i = 0, len = child.length; i < len; i++) 
-        child[i].key = data[i];
+      for (var i = 0, len = child.length; i < len; i++) child[i].key = data[i];
       return;
     }
 
@@ -109,5 +112,6 @@
     }
     return paginate();
   }
+  
   exports.Paginate = Paginate;
 })(window);
