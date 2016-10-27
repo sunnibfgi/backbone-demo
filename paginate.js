@@ -21,12 +21,14 @@
         return false;
       if (pageNumbers - pageVisible < pageHalf)
         hasGap = false;
+
       render(pageVisible);
       el.addEventListener('click', function(e) {
         pageClickHandler(e);
         pageCallback(el, pageIndex);
       });
       window.addEventListener('hashchange', hashChangeHandler);
+      window.addEventListener('DOMContentLoaded', hashChangeHandler);
     }
 
     function render(limit) {
@@ -62,7 +64,7 @@
     function getPageKeys(el, data) {
       var child = el.querySelectorAll('.page-item');
       for (var i = 0, len = child.length; i < len; i++) 
-        child[i].key = data[i];
+          child[i].key = data[i];
       return;
     }
 
@@ -83,10 +85,11 @@
       }
       render(pageLimit);
       location.hash = `page-${pageIndex}`;
+
     }
 
     function hashChangeHandler(e) {
-      var str = e.newURL.match(/\d+$/g)[0];
+      var str = location.hash.match(/\d+$/g)[0];
       pageIndex = +str;
       viewPageNumbers();
     }
@@ -119,6 +122,6 @@
     }
     return paginate();
   }
-
   exports.Paginate = Paginate;
+  
 })(window);
