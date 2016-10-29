@@ -5,7 +5,7 @@
   let Paginate = function(el, {
     pageNumbers,
     pageVisible = 6,
-    pageCallback = function() {}
+    pageCallback = () => {}
   } = {}) {
     let pageStart = 1,
       pageIndex = 1,
@@ -23,7 +23,7 @@
         hasGap = false;
 
       render(pageVisible);
-      el.addEventListener('click', function(e) {
+      el.addEventListener('click', (e) => {
         pageClickHandler(e);
         pageCallback(el, pageIndex);
       });
