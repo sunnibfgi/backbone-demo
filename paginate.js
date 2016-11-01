@@ -1,7 +1,9 @@
 //paginate.js
 //usage: Paginate(el, [options])
-(function(exports) {
 
+(function(exports) {
+  'use strict';
+    
   let Paginate = function(el, {
     pageNumbers,
     pageVisible = 6,
