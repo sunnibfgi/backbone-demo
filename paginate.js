@@ -67,7 +67,7 @@
       var child = el.querySelectorAll('.page-item');
       for (var i = 0, len = child.length; i < len; i++) 
           child[i].key = data[i];
-      return;
+      return
     }
 
     function viewPageNumbers() {
@@ -86,13 +86,17 @@
         }
       }
       render(pageLimit);
-      location.hash = `page-${pageIndex}`;
+      location.hash = `!page-${pageIndex}`;
 
     }
 
     function hashChangeHandler(e) {
-      var str = location.hash.match(/\d+$/g)[0];
-      pageIndex = +str;
+      let str = '',
+          hash = location.hash
+      if(hash.length) {
+         str = location.hash.match(/\d+$/g)[0]; 
+         pageIndex = Math.min(+str, pageNumbers);
+      }
       viewPageNumbers();
     }
 
